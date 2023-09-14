@@ -1,5 +1,6 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+ <card-details></card-details>
 </template>
+<script setup>
+import CardDetails from '../components/CardDetails/CardDetails.vue'
+</script>
