@@ -41,6 +41,7 @@
             :src="require('../../assets/CardImg/air_bubble_app_pic_1.png')"
             width="auto"
             height="400"
+            @click="openImgDialog = !openImgDialog"
           ></v-img
         ></v-col>
         <v-col cols="6" class="pl-1">
@@ -55,6 +56,7 @@
                 :src="imgV"
                 width="auto"
                 height="196"
+                @click="openImgDialog = !openImgDialog"
                 :class="
                   indx === 3
                     ? 'rounded-br-xxl'
@@ -239,7 +241,7 @@ const propertyImg = [
 .show-all-img-button {
   display: flex;
   width: 100%;
-  height: -webkit-fill-available;
+  height: 200px;
   justify-content: center;
   align-items: end;
   padding-bottom: 20px;

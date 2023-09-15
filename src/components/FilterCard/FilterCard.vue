@@ -7,7 +7,7 @@
         :key="indx"
       >
         <v-container class="ma-0 pa-2">
-          <v-card flat class="ma-0 pa-0 rounded-xl" width="auto">
+          <v-card flat class="ma-0 pa-0 rounded-xl" width="auto" to="about">
             <v-card-title class="pa-0">
               <v-carousel
                 class="rounded-xl"
@@ -28,14 +28,14 @@
                       <v-btn
                         icon
                         fab
-                        @click="
+                        @click='
                           () => {
                             listData.likeProperty = !listData.likeProperty;
                             if (listData.likeProperty === true) {
                               listData.closeSnackBar = true;
                             }
                           }
-                        "
+                        '
                       >
                         <v-icon
                           large
@@ -307,6 +307,7 @@ const onLikeProperty = (id) => {
     likeProperty.value = false;
   }
 };
+
 </script>
 
 <style scoped></style>
