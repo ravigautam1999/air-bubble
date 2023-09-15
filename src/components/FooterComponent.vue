@@ -23,7 +23,7 @@
 
     <v-container>
       <v-divider class="black mb-7"></v-divider>
-      <v-row>
+      <v-row class="pl-2">
         <v-col>
           <div class="text-subtitle-2">Support</div>
           <div

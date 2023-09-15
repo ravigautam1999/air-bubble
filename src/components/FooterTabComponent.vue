@@ -7,7 +7,7 @@
         v-show="indx < 10 || showMore"
         class="pa-0 col-xs-6 col-sm-3 col-md-2 col-lg-2 col-xl-2"
       >
-        <div v-if="tabItem !== 'Categories'" class="pt-3 pl-3">
+        <div v-if="tabItem !== 'Categories'" class="pt-3 pl-1">
           <v-btn small plain block class="text-capitalize d-flex justify-start pl-0 pb-0">
             <div class="text-subtitle-2">{{ itemVal.title }}</div>
           </v-btn>
@@ -17,7 +17,7 @@
           v-else
           plain
           block
-          class="text-capitalize d-flex justify-start ma-0 ma-0"
+          class="text-capitalize d-flex justify-start ma-0 ma-0 pl-1"
         >
           <div class="text-subtitle-2">
             {{ itemVal }}
