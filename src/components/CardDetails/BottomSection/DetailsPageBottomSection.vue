@@ -166,6 +166,7 @@
       </v-card>
       <v-divider class="mt-4 mb-4"></v-divider>
       <PlaceOffersAmenities/>
+      <DatePicker/>
     </v-container>
   </v-sheet>
 </template>
@@ -173,6 +174,7 @@
 <script setup>
 import { ref } from "vue";
 import PlaceOffersAmenities from "./PlaceOffersAmenities.vue";
+import DatePicker from "./DatePicket.vue"
 
 const propertyTitle = ref("Entire villa hosted by Rahul");
 const noOfGuestsProperty = ref("16+");

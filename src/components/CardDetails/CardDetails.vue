@@ -84,7 +84,7 @@
     </div>
     <v-row>
       <v-col cols="7">
-       <DetailsPageBottomSection/>
+        <DetailsPageBottomSection />
       </v-col>
       <v-col cols="5">
         <v-card elevation="6" class="rounded-xl">
@@ -103,40 +103,73 @@
           </v-card-title>
           <v-card-subtitle>
             <v-row class="ma-0 pa-0 mt-6">
-              <v-col class="ma-0 pa-0">
-                <v-text-field
-                  outlined
-                  v-model="guestCheckInDate"
-                  label="check-in"
-                  placeholder="Add date"
-                ></v-text-field>
-              </v-col>
-              <v-col class="ma-0 pa-0">
-                <v-text-field
-                  outlined
-                  v-model="guestCheckOutDate"
-                  label="check-out"
-                  placeholder="Add date"
-                ></v-text-field>
+              <v-col>
+                <functional-calendar
+                  :is-modal="true"
+                  :is-date-range="true"
+                  :is-multiple="true"
+                  :calendars-count="2"
+                  :isAutoCloseable="true"
+                  :isLayoutExpandable="false"
+                >
+                  <template v-slot:dateRangeInputs="{ startDate, endDate }">
+                    <span class="date-input"
+                      >
+
+                      <v-text-field
+                        outlined
+                        label="check-in"
+                        placeholder="Add date"
+                        :value="startDate"
+                        clearable
+                      ></v-text-field>
+
+                      <v-text-field
+                        outlined                  
+                        label="check-out"
+                        placeholder="Add date"
+                        :value="endDate"
+                        clearable
+                      ></v-text-field>
+                    </span>
+                  </template>
+                </functional-calendar>
               </v-col>
             </v-row>
-            <v-row class="ma-0 pa-0">
+            <v-row class="ma-0 pa-0 ml-3 mr-3">
               <v-select v-model="guestSelectValue" label="Guests" outlined>
                 <template v-slot:no-data>
-                  <v-row class="ma-2" v-for="it in guestSelectOptions" :key="it.title">
+                  <v-row
+                    class="ma-2"
+                    v-for="it in guestSelectOptions"
+                    :key="it.title"
+                  >
                     <v-col class="pl-6 pt-3 pb-3">
                       <div class="text-body-1">{{ it.title }}</div>
                       <div class="text-caption pt-1">{{ it.subtitle }}</div>
                     </v-col>
                     <v-col class="d-flex justify-end align-center">
                       <span class="pr-4">
-                        <v-btn small class="plus-minus-button-style" plain icon @click="it.itemValue += 1">
+                        <v-btn
+                          small
+                          class="plus-minus-button-style"
+                          plain
+                          icon
+                          @click="it.itemValue += 1"
+                        >
                           <v-icon color="black">mdi-plus</v-icon>
                         </v-btn>
                       </span>
                       <span>{{ it.itemValue }}</span>
                       <span class="pl-4 pr-4">
-                        <v-btn small class="plus-minus-button-style" plain :disabled="it.itemValue === 0" icon @click="it.itemValue -= 1">
+                        <v-btn
+                          small
+                          class="plus-minus-button-style"
+                          plain
+                          :disabled="it.itemValue === 0"
+                          icon
+                          @click="it.itemValue -= 1"
+                        >
                           <v-icon color="black">mdi-minus</v-icon>
                         </v-btn>
                       </span>
@@ -147,7 +180,9 @@
             </v-row>
           </v-card-subtitle>
           <v-card-actions class="mr-3 ml-3 mb-4 pb-5">
-            <v-btn large block class="text-capitalize" dark>Check availability</v-btn>
+            <v-btn large block class="text-capitalize" dark
+              >Check availability</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -160,6 +195,7 @@ import { ref } from "vue";
 import ShareDialog from "../CardDetails/ShareDialog.vue";
 import ImgDialog from "../CardDetails/ImgDialog.vue";
 import DetailsPageBottomSection from "./BottomSection/DetailsPageBottomSection.vue";
+import { FunctionalCalendar } from "vue-functional-calendar";
 
 const pageTitle = ref("Camp Apple Retreat #serenic #village");
 const noOfReview = ref(2);
@@ -190,11 +226,10 @@ Guest access
 spece comprises of 6 camps and farm where you an enjoy the walk and pluck your own apples from the orchard .
 there is also an open sitting area and restaurant for food services`);
 const hostProfileImg = ref();
-const propertyPrice = ref('1,000');
+const propertyPrice = ref("1,000");
 const guestCheckInDate = ref();
 const guestCheckOutDate = ref();
 const guestBookingCount = ref();
-
 
 const propertyImg = [
   require("../../assets/CardImg/air_bubble_app_pic_2.png"),
@@ -215,6 +250,12 @@ const propertyImg = [
 }
 
 .plus-minus-button-style {
-    box-shadow: 0px 0px 2px black;
+  box-shadow: 0px 0px 2px black;
+}
+
+
+.date-input{
+  display: flex !important;
+  height: 44px !important;
 }
 </style>
