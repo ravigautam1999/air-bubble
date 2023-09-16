@@ -44,6 +44,7 @@
             {{ itemV }}
           </div>
         </v-col>
+        
         <v-col>
           <div class="text-subtitle-2">Air Bubble</div>
           <div

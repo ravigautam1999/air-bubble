@@ -83,7 +83,9 @@
       </v-row>
     </div>
     <v-row>
-      <v-col cols="7"></v-col>
+      <v-col cols="7">
+       <DetailsPageBottomSection/>
+      </v-col>
       <v-col cols="5">
         <v-card elevation="6" class="rounded-xl">
           <v-card-title>
@@ -157,6 +159,7 @@
 import { ref } from "vue";
 import ShareDialog from "../CardDetails/ShareDialog.vue";
 import ImgDialog from "../CardDetails/ImgDialog.vue";
+import DetailsPageBottomSection from "./BottomSection/DetailsPageBottomSection.vue";
 
 const pageTitle = ref("Camp Apple Retreat #serenic #village");
 const noOfReview = ref(2);
@@ -192,42 +195,6 @@ const guestCheckInDate = ref();
 const guestCheckOutDate = ref();
 const guestBookingCount = ref();
 
-const placeOffersAmenities = ref({
-  entertainment: [
-    { name: "TV", icon: "mdi-television-classic" },
-    { name: "Pool table", icon: "mdi-billiards" },
-  ],
-  bathroom: [
-    { name: "Hair dryer", icon: "mdi-hair-dryer" },
-    { name: "Shower", icon: "mdi-shower-head" },
-    { name: "Bathtub", icon: "mdi-bathtub-outline" },
-  ],
-  homeSafty: [
-    { name: "Security cameras on property", icon: "mdi-cctv" },
-    { name: "First aid kit", icon: "mdi-medical-bag" },
-  ],
-  internetAndOffice: [
-    { name: "Wifi", icon: "mdi-wifi" },
-    { name: "Dedicated workspace", icon: "mdi-table-chair" },
-  ],
-  outdoor: [
-    { name: "Fire pit", icon: "mdi-fireplace" },
-    { name: "Outdoor dining area", icon: "mdi-food-turkey" },
-    { name: "BBQ grill", icon: "mdi-grill-outline" },
-  ],
-  parkingAndFacilities: [
-    { name: "Free parking on premises", icon: "mdi-car-back" },
-  ],
-  services: [{ name: "Smoking allowed", icon: "mdi-smoking" }],
-  notIncluded: [
-    { name: "Washing machine", icon: "mdi-washing-machine-off" },
-    { name: "Air conditioning", icon: "mdi-air-purifier-off" },
-    { name: "Water heater", icon: "mdi-water-boiler-off" },
-    { name: "Piano", icon: "mdi-piano-off" },
-    { name: "Smoke alarm", icon: "mdi-smoke-detector-off-outline" },
-    { name: "Desk lamp", icon: "mdi-desk-lamp-off" },
-  ],
-});
 
 const propertyImg = [
   require("../../assets/CardImg/air_bubble_app_pic_2.png"),

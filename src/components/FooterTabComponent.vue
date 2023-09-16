@@ -3,7 +3,7 @@
     <v-row class="pa-5 tab-item-style" style="background-color: #f4f4f4">
       <v-col       
         v-for="(itemVal, indx) in tabSection"
-        :key="itemVal"
+        :key="indx"
         v-show="indx < 10 || showMore"
         class="pa-0 col-xs-6 col-sm-3 col-md-2 col-lg-2 col-xl-2"
       >
