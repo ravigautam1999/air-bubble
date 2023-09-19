@@ -2,7 +2,7 @@
   <v-sheet>
     <v-container>
       <v-row>
-        <v-col cols="10">
+        <v-col class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-11">
           <div>{{ propertyTitle }}</div>
           <div class="d-flex align-center">
             {{ noOfGuestsProperty }} guests <v-icon>mdi-circle-small</v-icon>
@@ -11,9 +11,10 @@
             {{ noOfBathroomsProperty }} Bathrooms
           </div>
         </v-col>
-        <v-col cols="2">
+        <v-spacer></v-spacer>
+        <v-col class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
           <v-img
-            :src="require('@/assets/CardImg/air_bubble_app_pic_1.png')"
+            :src="require('@/assets/bedrooms/bedroomsImg/propertyProfile.jpg')"
             width="60"
             height="60"
             class="rounded-pill"
@@ -126,10 +127,11 @@
                 <v-col cols="6"
                   ><div>
                     <v-img
-                      class="rounded-lg"
+                      class="rounded-lg carousel-img"
                       :src="bedImg.img1"
                       width="auto"
                       height="200"
+                      @click="openBedroomImgDialog = !(openBedroomImgDialog)"
                     ></v-img>
                   </div>
                   <span>
@@ -143,10 +145,11 @@
                 </v-col>
                 <v-col cols="6"
                   ><v-img
-                    class="rounded-lg"
+                    class="rounded-lg carousel-img"
                     :src="bedImg.img2"
                     width="auto"
                     height="200"
+                    @click="openBedroomImgDialog = !(openBedroomImgDialog)"
                   ></v-img>
                   <div class="text-body-1 font-weight-medium mt-3 ml-1">
                     Bedrooms {{ bedImg.id + 1 }}
@@ -165,16 +168,18 @@
         </v-card-title>
       </v-card>
       <v-divider class="mt-4 mb-4"></v-divider>
+      <BedroomImgDialog :openBedroomImgDialog="openBedroomImgDialog"/>
       <PlaceOffersAmenities/>
-      <DatePicker/>
+      <DatePicker @update-booking-dates="updateDates"/>
     </v-container>
   </v-sheet>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 import PlaceOffersAmenities from "./PlaceOffersAmenities.vue";
 import DatePicker from "./DatePicket.vue"
+import BedroomImgDialog from "../BedroomImgDialog/BedroomImgDialog.vue"
 
 const propertyTitle = ref("Entire villa hosted by Rahul");
 const noOfGuestsProperty = ref("16+");
@@ -184,7 +189,8 @@ const noOfBathroomsProperty = ref(8);
 const currentVal = ref(1);
 const totalVal = ref(3);
 const selectedBedroomImg = ref();
-
+const openBedroomImgDialog = ref(false)
+const emits = defineEmits(["update-dates"])
 const bedroomsList = ref([
   {
     img1: require("@/assets/bedrooms/bedroomsImg/im1.jpeg"),
@@ -205,6 +211,11 @@ const bedroomsList = ref([
 const aboutProperty = ref(
   `Nestled at the base of the picturesque Aravalli Hills, Khohar Haveli is a distinct amalgamation of old-world charm and modern comforts. A treasured gem, the haveli has gone through a thorough process of restoration, retaining its 18th-century architecture, beautiful artefacts and fresco paintings. Evenings are for enjoying a relaxing soak in the private swimming pool.`
 );
+
+const updateDates = ({dateModel}) => {
+  console.log("update dates in", dateModel)
+  emits('update-dates', dateModel)
+}
 </script>
 
 <style scoped>
@@ -212,5 +223,8 @@ const aboutProperty = ref(
   box-shadow: 0px 0px 5px #413f3f !important;
   background-color: #efefef1f;
   color: black !important;
+}
+.carousel-img:hover {
+    cursor:hand !important;
 }
 </style>
