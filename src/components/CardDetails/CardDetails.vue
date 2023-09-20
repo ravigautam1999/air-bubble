@@ -188,6 +188,13 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-divider class="mt-5 mb-5"></v-divider>
+      <ReviewSection />
+      <v-divider class="mt-5 mb-5"></v-divider>
+      <AboutHostSection />
+      <v-divider class="mt-5 mb-5"></v-divider>
+      <ThingsToKnow />
+      <v-divider class="mt-5 mb-5"></v-divider>
     </v-sheet>
   </v-container>
 </template>
@@ -197,6 +204,9 @@ import { ref } from "vue";
 import ShareDialog from "../CardDetails/ShareDialog.vue";
 import ImgDialog from "../CardDetails/ImgDialog.vue";
 import DetailsPageBottomSection from "./BottomSection/DetailsPageBottomSection.vue";
+import ReviewSection from "./ReviewSection.vue";
+import AboutHostSection from "./AboutHostSection.vue";
+import ThingsToKnow from "./ThingsToKnow.vue";
 import { FunctionalCalendar } from "vue-functional-calendar";
 
 const pageTitle = ref("Camp Apple Retreat #serenic #village");
