@@ -1,69 +1,113 @@
 <template>
-    <v-sheet>
-        <v-card>
-            <v-row class="pt-2 mt-2">
-                <v-col class="col-3">
-                    A
-                </v-col>
-                <v-col class="colo-6 d-flex justify-center align-center flex-column">
-                    <v-card flat class="overflow-hidden">
-                        <v-tabs v-model="selectedMenuTab" grow>
-                            <v-tab v-for="mItem in menuTabItems" :key="mItem">{{ mItem }}
-                            </v-tab>
-                        </v-tabs>
+  <v-sheet>
+    <v-app-bar>
+      <v-row>
+        <v-col>
+          <v-img :src="navIcon.icon" height="60" width="100"></v-img>
+        </v-col>
+        <v-col class="d-flex align-center justify-center">
+          <div class="d-flex justify-center align-center search-bar">
+            <span class="pl-2 pr-2 text-subtitle-2">Anywhere</span>
+            <v-divider vertical></v-divider>
+            <span class="pl-2 pr-2 text-subtitle-2">Any week</span>
+            <v-divider vertical></v-divider>
+            <span class="pl-2 pr-2 text-subtitle-2">Add guests</span>
+            <span class="pl-2 pr-0 text-subtitle-2">
+              <v-btn icon fab x-small color="white" class="red">
+                <v-icon>mdi-magnify</v-icon>
+              </v-btn>
+            </span>
+          </div>
+        </v-col>
+        <v-col class="d-flex align-center justify-end">
+          <span>
+            <v-btn text class="text-subtitle-2 text-capitalize">
+              Air bubble home
+            </v-btn>
+          </span>
+          <span class="pr-2">
+            <v-btn fab icon @click="openDialog = !openDialog">
+              <v-icon color="black">mdi-web</v-icon>
+            </v-btn>
+          </span>
+          <span>
+            <v-menu bottom offset-y rounded="xl" nudge-bottom="10">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  outlined
+                  class="rounded-pill pa-5 pr-4"
+                >
+                  <v-icon left>mdi-menu</v-icon>
+                  <v-icon large right>mdi-account-circle</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item>
+                  <v-btn
+                    text
+                    block
+                    class="justify-start text-capitalize text-subtitle-2"
+                    @click="openSignDialog = !openSignDialog"
+                    >Sign up</v-btn
+                  >
+                </v-list-item>
 
+                <v-list-item>
+                  <v-btn
+                    text
+                    block
+                    class="justify-start text-capitalize text-subtitle-2"
+                    @click="openSignDialog = !openSignDialog"
+                    >Log in</v-btn
+                  >
+                </v-list-item>
+                <v-divider></v-divider>
+                <v-list-item>
+                  <v-btn
+                    text
+                    block
+                    class="justify-start text-capitalize text-subtitle-2"
+                    >Air bubble your home</v-btn
+                  >
+                </v-list-item>
 
-                    </v-card>
-                    <v-tabs-items v-if="true" class="mt-2" style="width: inherit;" v-model="selectedMenuTab">
-                        <v-tab-item v-for="mItem in menuTabItems" :key="mItem">
-                            <v-card class="secondary ma-2 rounded-pill" >
-                                <v-card-text class="error rounded-pill">
-                                    <v-row class="error rounded-pill">
-                                    <v-col class="d-flex flex-column rounded-pill primary">
-                                        <span>Where</span>
-                                        <span>Search destinations</span>
-                                    </v-col>
-                                    <v-col class="d-flex flex-row">
-
-                                        <v-col class="d-flex flex-column mt-0 pt-0 rounded-pill primary">
-                                            <span>Check in</span>
-                                            <span>Add dates</span>
-                                        </v-col>
-                                        <v-col class="d-flex flex-column mt-0 pt-0 rounded-pill primary">
-                                            <span>Check out</span>
-                                            <span>Add dates</span>
-                                        </v-col>
-
-                                    </v-col>
-                                    <v-col class="d-flex flex-row rounded-pill primary">
-                                        <v-col class="d-flex flex-column mt-0 pt-0">
-                                            <span>Who</span>
-                                            <span>Add guests</span>
-                                        </v-col>
-                                        <v-col class="d-flex flex-column mt-0 pt-0">
-                                            <v-btn x-small class="rounded-pill">Search</v-btn>
-                                        </v-col>
-                                    </v-col>
-                                </v-row>
-                                </v-card-text>
-                            </v-card>
-                        </v-tab-item>
-                    </v-tabs-items>
-                </v-col>
-                <v-col class="col-3 d-flex justify-end">
-
-                    c </v-col>
-            </v-row>
-        </v-card>
-    </v-sheet>
+                <v-list-item>
+                  <v-btn
+                    text
+                    block
+                    class="justify-start text-capitalize text-subtitle-2"
+                    >Help Center</v-btn
+                  >
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </span>
+        </v-col>
+      </v-row>
+      <LanguageAndCurrencyDialog :openDialog="openDialog" />
+      <LoginOrSignupDialog :openSignDialog="openSignDialog" />
+    </v-app-bar>
+  </v-sheet>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            selectedMenuTab: null,
-            menuTabItems: ["Stays", "Experiences", "Online Experiences"]
-        }
-    }
-}
+
+<script setup>
+import { ref } from "vue";
+import LanguageAndCurrencyDialog from "@/components/CardDetails/LanguageAndCurrencyDialog.vue";
+import LoginOrSignupDialog from "@/components/User/LoginOrSignupDialog.vue";
+import CardDetails from "@/components/CardDetails/CardDetails.vue"
+const navIcon = ref({ icon: require("@/assets/web_app_logo.png") });
+
+const openDialog = ref(false);
+const openSignDialog = ref(false);
 </script>
+
+<style scoped>
+.search-bar {
+  border: 1px solid rgb(233, 233, 233);
+  padding: 7px;
+  border-radius: 40px;
+  box-shadow: 0px 0px 8px rgb(186, 186, 186);
+}
+</style>

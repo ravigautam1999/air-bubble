@@ -1,5 +1,6 @@
 <template>
   <v-sheet>
+    <NavBar/>
     <filter-menu></filter-menu>
     <filter-card></filter-card>
     <hello-world />

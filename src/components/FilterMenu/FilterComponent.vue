@@ -1,7 +1,7 @@
 <template>
     <div class="text-center">
         <v-dialog v-model="dialog" width="600">
-            <v-card>
+            <v-card rounded="lg">
                 <v-card-title class="text-h6 grey lighten-2 mb-1">
                     Filters
                     <v-spacer></v-spacer>

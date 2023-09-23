@@ -4,10 +4,10 @@
       <v-row>
         <v-col v-for="(r,indx) in list" :key="indx">
           <span v-if="indx%2 === 0">
-            { "title": "{{ r }}",
+            { "country": "{{ r }}",
           </span>
           <span v-else>
-            "subtitle": "{{ r }}" },
+            "currency": "{{ r }}" },
           </span>
         </v-col>
       </v-row>
