@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet @scroll="onScroll">
     <v-row class="ml-4 mr-4">
       <v-col
         class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mr-0 pr-0"
@@ -308,6 +308,9 @@ const onLikeProperty = (id) => {
   }
 };
 
+const onScroll = () => {
+  console.log("scroll happens")
+}
 </script>
 
 <style scoped></style>
