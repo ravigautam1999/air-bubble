@@ -1,5 +1,5 @@
 <template>
-  <v-sheet @scroll="onScroll">
+  <v-sheet @scroll="onScroll" style="padding-top: 160px !important;">
     <v-row class="ml-4 mr-4">
       <v-col
         class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mr-0 pr-0"
@@ -34,14 +34,11 @@
                             if (listData.likeProperty === true) {
                               listData.closeSnackBar = true;
                             }
-                          }
-                        '
+                          }'
                       >
                         <v-icon
                           large
-                          :color="
-                            listData.likeProperty === true ? 'red' : 'black'
-                          "
+                          :color="listData.likeProperty === true ? 'red' : 'black'"
                           style="text-shadow: 0px 0px 10px rgb(255, 255, 255)"
                           >mdi-heart
                         </v-icon>

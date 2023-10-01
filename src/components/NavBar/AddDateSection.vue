@@ -66,7 +66,10 @@
                       >
                       </functional-calendar>
                     </div>
-                    <div v-if="selectedValue === 1"></div>
+                    <div v-if="selectedValue === 1">
+                      <MonthSlider>
+                    </MonthSlider>
+                    </div>
                     <div
                      v-if="selectedValue === 2"
                       class="d-flex justify-center flex-column align-center"
@@ -118,14 +121,13 @@
                             <v-card
                               :color="active ? undefined : ''"
                               class="ma-3 rounded-xl d-flex flex-column justify-center align-center"
-                              width="100"
-                              height="100"
+                              width="130"
+                              height="160"
                               :class="
-                                active ? 'month-card-active' : 'month-card'
-                              "
+                                active ? 'month-card-active' : 'month-card'"
                               @click="toggle"
                             >
-                              <div>
+                              <div class="mb-3"> 
                                 <v-icon>mdi-calendar-month-outline</v-icon>
                               </div>
                               <div class="text-body-2 font-weight-bold">
@@ -153,6 +155,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { FunctionalCalendar } from "vue-functional-calendar";
+import MonthSlider from "./MonthSlider.vue";
 
 const headerList = ref(["Dates", "Months", "Flexible"]);
 const selectedValue = ref();

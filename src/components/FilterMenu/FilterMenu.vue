@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet style="position: fixed; width: 100%; padding-top: 65px; overflow: hidden;z-index: 2;">
     <filter-component :isDialogOpen="isDialogOpen"></filter-component>
 
     <v-row class="ma-0 pa-0 mt-4">

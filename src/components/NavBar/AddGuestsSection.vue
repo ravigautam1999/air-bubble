@@ -11,14 +11,14 @@
 
           <v-col class="d-flex justify-end align-center">
             <span>
-              <v-btn icon fab x-small :disabled="guest.value === 0" class="button-box" @click="guest.value -= 1">
-                <v-icon>mdi-minus</v-icon>
+              <v-btn icon fab x-small :disabled="guest.value === 0" class="button-box"  @click="guest.value -= 1">
+                <v-icon color="black">mdi-minus</v-icon>
               </v-btn>
             </span>
             <span class="ml-3 mr-3">{{ guest.value }}</span>
             <span>
               <v-btn icon fab x-small class="button-box" @click="guest.value += 1">
-                <v-icon>mdi-plus</v-icon>
+                <v-icon color="black">mdi-plus</v-icon>
               </v-btn>
             </span>
           </v-col>
@@ -41,6 +41,6 @@ const guestTypes = ref([
 
 <style scoped>
 .button-box {
-  box-shadow: 0px 0px 1px black !important;
+  box-shadow: 0px 0px 2px black !important;
 }
 </style>

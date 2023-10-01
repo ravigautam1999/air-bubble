@@ -19,5 +19,4 @@
 import {ref} from "vue";
 import list from "../assets/dummyData/footerTabsItems.json";
 
-
 </script>

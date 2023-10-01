@@ -1,10 +1,10 @@
 <template>
-  <v-sheet>
+  <v-sheet style="position: fixed !important; z-index: 6 !important; width: 100%;">
     <v-app-bar
       :extended="false"
       extension-height="120"
       scroll-target="#div-container"
- @scroll="onScroll"
+      @scroll="onScroll"
     >
       <v-row>
         <v-col>
@@ -28,7 +28,11 @@
             </span>
           </div>
           <div v-else>
-            <v-tabs color="black" background-color="#f5f5f5" v-model="selectedNavTabs">
+            <v-tabs
+              color="black"
+              background-color="#f5f5f5"
+              v-model="selectedNavTabs"
+            >
               <v-tab
                 class="text-capitalize overflow-auto"
                 v-for="tab in navTabsItem"
@@ -108,23 +112,23 @@
       </v-row>
       <LanguageAndCurrencyDialog :openDialog="openDialog" />
       <LoginOrSignupDialog :openSignDialog="openSignDialog" />
-      <SearchDestinationsDialog :openSearchDestinationsDialog ="openSearchDestinationsDialog"/>
+      <SearchDestinationsDialog
+        :openSearchDestinationsDialog="openSearchDestinationsDialog"
+      />
       <template v-slot:extension v-if="hideExtendedHight">
-      <ExtendedNavBarSection :selectedNavTabs="selectedNavTabs"/>
+        <ExtendedNavBarSection :selectedNavTabs="selectedNavTabs" />
       </template>
     </v-app-bar>
   </v-sheet>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, defineEmits, watch } from "vue";
 import LanguageAndCurrencyDialog from "@/components/CardDetails/LanguageAndCurrencyDialog.vue";
 import LoginOrSignupDialog from "@/components/User/LoginOrSignupDialog.vue";
 import CardDetails from "@/components/CardDetails/CardDetails.vue";
-import SearchDestinationsDialog from "@/components/NavBar/SearchDestinationsDialog.vue"
-import ExtendedNavBarSection from "@/components/NavBar/ExtendedNavBarSection.vue"
-import { mount } from "@vue/test-utils";
-
+import SearchDestinationsDialog from "@/components/NavBar/SearchDestinationsDialog.vue";
+import ExtendedNavBarSection from "@/components/NavBar/ExtendedNavBarSection.vue";
 
 const navIcon = ref({ icon: require("@/assets/web_app_logo.png") });
 
@@ -134,23 +138,26 @@ const hideExtendedHight = ref(false);
 const selectedNavTabs = ref();
 const openSearchDestinationsDialog = ref(false);
 const navTabsItem = ["Stays", "Experiences", "Online Experiences"];
-
-
+const emits = defineEmits(["on-hide-overlay"])
 const onScroll = () => {
-  console.log("scroll")
-}
+  console.log("scroll");
+};
 
-onMounted(()=> {
-  window.addEventListener('scroll', ()=> {
-    console.log("scroll happens")
-    hideExtendedHight.value = false
-  })
-})
+onMounted(() => {
+  window.addEventListener("scroll", () => {
+    console.log("scroll happens");
+    hideExtendedHight.value = false;
+  });
+});
 
+watch(hideExtendedHight, ()=> {
+ emits("on-hide-overlay", {
+  val: hideExtendedHight
+ })
+});
 </script>
 
 <style scoped>
-
 .search-bar {
   border: 1px solid rgb(233, 233, 233);
   padding: 7px;
