@@ -5,14 +5,14 @@
         <div class="text-subtitle-2 mb-5 mt-6">Search by region</div>
       </v-card-title>
       <v-card-subtitle>
-        <v-item-group mandatory>
+        <v-item-group mandatory v-model="selectedDestiny">
           <v-row>
             <v-col
               cols="4"
               v-for="mapItem in regionMaps"
               :key="mapItem.country"
             >
-              <v-item v-slot="{ active, toggle }">
+              <v-item v-slot="{ active, toggle }" >
                 <div @click="toggle">
                   <v-img
                     :src="mapItem.map"
@@ -36,10 +36,12 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch } from "vue";
+import { ref, defineProps, watch, defineEmits } from "vue";
 
 const openSearchDestinationsMenu = ref(false);
+const selectedDestiny = ref();
 const props = defineProps(["openSearchDestinationsMenu"]);
+const emits = defineEmits(["destination-selection"]);
 const regionMaps = ref([
   {
     country: "I'm flexible",
@@ -73,6 +75,12 @@ watch(
     openSearchDestinationsMenu.value = true;
   }
 );
+
+watch(selectedDestiny, () => {
+  emits("destination-selection", {
+    destiny: selectedDestiny,
+  });
+});
 </script>
 
 <style scoped>
