@@ -45,6 +45,7 @@
                     :key="header"
                     class="transparent text-capitalize black--text rounded-pill"
                     active-class="white--text pink"
+                    @click="onSelectMonthTab(header)"
                   >
                     {{ header }}
                   </v-tab>
@@ -67,7 +68,7 @@
                       </functional-calendar>
                     </div>
                     <div v-if="selectedValue === 1">
-                      <MonthSlider>
+                      <MonthSlider @selected-month-slider-value="onSelectedMonthSliderValue">
                     </MonthSlider>
                     </div>
                     <div
@@ -88,6 +89,7 @@
                               <v-item v-slot="{ active, toggle }">
                                 <div
                                   @click="toggle"
+                                  @click.passive="onDaySelection(day)"
                                   class="elevation-1"
                                   :class="
                                     active
@@ -96,7 +98,7 @@
                                   "
                                 >
                                   <span class="pa-5 ma-3 text-body-2">{{
-                                    day
+                                    day 
                                   }}</span>
                                 </div>
                               </v-item>
@@ -153,19 +155,23 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, defineEmits, watch } from "vue";
 import { FunctionalCalendar } from "vue-functional-calendar";
 import MonthSlider from "./MonthSlider.vue";
 
 const headerList = ref(["Dates", "Months", "Flexible"]);
 const selectedValue = ref();
 const dateModel = ref();
-const dayList = ["Weekend", "Week", "Months"];
+const dayList = ["Weekend", "Week", "Month"];
 const selectedWeek = ref();
 const selectedSlideMonth = ref();
 const currentDate = new Date();
-
+const emits = defineEmits(["on-day-selection", "on-month-selection", "selected-slide-months", "selected-month-slider-value"])
 const slideMonthList = ref([]);
+const monthSliderValue = ref(1)
+const startingMonthDate = ref()
+const currentStartingMonthDate = ref([new Date().getDate(), new Date().getMonth()+1, new Date().getFullYear()].join('/'));
+
 const months = [
   "January",
   "February",
@@ -185,7 +191,7 @@ const getMonthList = () => {
   let currentMonth = currentDate.getMonth();
   let currentYear = currentDate.getFullYear();
   for (let i = 1; i <= 12; i++) {
-    let obj = new Object({ name: "", year: "" });
+    let obj = new Object({ name: "", year: "" , abbr: ""});
 
     if (currentMonth === 12) {
       currentYear += 1;
@@ -193,10 +199,42 @@ const getMonthList = () => {
     }
     obj.name = months.at(currentMonth);
     obj.year = currentYear;
+    obj.abbr = months.at(currentMonth).substring(0, 3);
     slideMonthList.value.push(obj);
     currentMonth += 1;
   }
 };
+
+const onDaySelection = (day) => {
+  console.log('day', day)
+  emits('on-day-selection', {
+    day: day
+  })
+};
+
+const onSelectMonthTab = (month) => {
+  console.log("month", month)
+  emits("on-month-selection", {
+    month: month
+  })
+};
+
+const onSelectedMonthSliderValue = (val) => {
+  console.log("MonthSliderValue", val)
+  emits("selected-month-slider-value", {
+    val:val
+  })
+  startingMonthDate.value = val.startMonthDateValue
+}
+
+watch(selectedSlideMonth, ()=>{
+  console.log(selectedSlideMonth.value)
+  emits('selected-slide-months', {
+    selectedSlideMonths: selectedSlideMonth,
+    slideMonthList: slideMonthList
+  })
+});
+
 onMounted(() => {
   getMonthList();
 });

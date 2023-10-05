@@ -16,8 +16,8 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                <v-col class="pa-0 text-subtitle-2">Where</v-col>
-                <v-col class="pa-0 text-caption" cols="10">
+                <v-col class="pa-0 text-caption font-weight-bold">Where</v-col>
+                <v-col class="pa-0 text-subtitle-2" cols="10">
                   <v-form v-if="true">
                     <v-text-field
                       placeholder="Search destinations"
@@ -41,6 +41,7 @@
         </v-menu>
 
         <v-divider vertical class="mt-3 mb-3"></v-divider>
+
         <v-menu
           offset-y
           rounded="xl"
@@ -54,20 +55,33 @@
               v-on="on"
               cols="2"
               class="col-style"
-              v-show="props.selectedNavTabs === 0"
+              v-show="
+                props.selectedNavTabs === 0 && currentMonthSelected === 'Dates'
+              "
             >
               <v-row class="d-flex flex-column rounded-pill pl-8">
-                <v-col class="pa-0 text-subtitle-2">Check in</v-col>
-                <v-col class="pa-0 text-caption">Add dates</v-col>
+                <v-col class="pa-0 text-caption font-weight-bold"
+                  >Check in</v-col
+                >
+                <v-col class="pa-0 text-subtitle-2 font-weight-regular"
+                  >Add dates</v-col
+                >
               </v-row>
             </v-col>
           </template>
-          <AddDateSection />
+          <AddDateSection
+            @on-day-selection="onDaySelection"
+            @on-month-selection="onMonthSelection"
+            @selected-slide-months="onSelectedSlideMonths"
+            @selected-month-slider-value="onSelectedMonthSliderValue"
+          />
         </v-menu>
         <v-divider
           vertical
           class="mt-3 mb-3"
-          v-show="props.selectedNavTabs === 0"
+          v-show="
+            props.selectedNavTabs === 0 && currentMonthSelected === 'Dates'
+          "
         ></v-divider>
 
         <v-menu
@@ -83,16 +97,78 @@
               v-on="on"
               cols="2"
               class="col-style"
-              v-show="props.selectedNavTabs === 0"
+              v-show="
+                props.selectedNavTabs === 0 && currentMonthSelected === 'Dates'
+              "
             >
               <v-row class="d-flex flex-column rounded-pill pl-8">
-                <v-col class="pa-0 text-subtitle-2">Check out</v-col>
-                <v-col class="pa-0 text-caption">Add dates</v-col>
+                <v-col class="pa-0 text-caption font-weight-bold"
+                  >Check out</v-col
+                >
+                <v-col class="pa-0 text-subtitle-2 font-weight-regular"
+                  >Add dates</v-col
+                >
               </v-row>
             </v-col>
           </template>
 
-          <AddDateSection />
+          <AddDateSection
+            @on-day-selection="onDaySelection"
+            @on-month-selection="onMonthSelection"
+            @selected-slide-months="onSelectedSlideMonths"
+            @selected-month-slider-value="onSelectedMonthSliderValue"
+          />
+        </v-menu>
+
+        <v-menu
+          v-show="false"
+          offset-y
+          rounded="xl"
+          bottom
+          :close-on-content-click="false"
+          :nudge-bottom="10"
+        >
+          <template v-slot:activator="{ attrs, on }">
+            <v-col
+              v-bind="attrs"
+              v-on="on"
+              cols="4"
+              class="col-style"
+              v-show="
+                props.selectedNavTabs === 0 &&
+                (currentMonthSelected === 'Months' ||
+                  currentMonthSelected === 'Flexible')
+              "
+            >
+              <v-row class="d-flex flex-column rounded-pill pl-8">
+                <v-col class="pa-0 text-caption font-weight-bold">When</v-col>
+                <v-col
+                  class="pa-0 text-subtitle-2"
+                  v-if="currentMonthSelected === 'Flexible'"
+                >
+                  <span v-if="selectedSlideMonth.length === 0"
+                    >Any {{ currentDaySelected }}</span
+                  >
+                  <span v-else>
+                    Any {{ currentDaySelected }} in
+                    <span v-for="(m, inx) in selectedSlideMonth" :key="m"
+                      ><span v-show="inx != 0">, </span
+                      >{{ slideMonthList[m].abbr }}</span
+                    >
+                  </span>
+                </v-col>
+                <v-col class="pa-0 text-subtitle-2" v-else>
+                  <span>{{ startMonthDateValue }} - {{ currentStartingMonthDate }}</span>
+                </v-col>
+              </v-row>
+            </v-col>
+          </template>
+          <AddDateSection
+            @on-day-selection="onDaySelection"
+            @on-month-selection="onMonthSelection"
+            @selected-slide-months="onSelectedSlideMonths"
+            @selected-month-slider-value="onSelectedMonthSliderValue"
+          />
         </v-menu>
 
         <v-menu
@@ -111,8 +187,10 @@
               v-show="props.selectedNavTabs === 1"
             >
               <v-row class="d-flex flex-column rounded-pill pl-8">
-                <v-col class="pa-0 text-subtitle-2">Date</v-col>
-                <v-col class="pa-0 text-caption">Add dates</v-col>
+                <v-col class="pa-0 text-caption font-weight-bold">Date</v-col>
+                <v-col class="pa-0 text-subtitle-2 font-weight-regular"
+                  >Add dates</v-col
+                >
               </v-row>
             </v-col>
           </template>
@@ -142,8 +220,19 @@
               >
                 <v-col class="pa-0 text-subtitle-2">
                   <v-row class="d-flex flex-column rounded-pill pl-8">
-                    <v-col class="pa-0 text-subtitle-2">Who</v-col>
-                    <v-col class="pa-0 text-caption">add guests</v-col>
+                    <v-col class="pa-0 text-caption font-weight-bold"
+                      >Who</v-col
+                    >
+                    <v-col class="pa-0">
+                      <span
+                        v-if="!showAddedGuests"
+                        class="text-subtitle-2 font-weight-regular"
+                        >add guests</span
+                      >
+                      <span v-else class="text-subtitle-2">{{
+                        showAddedGuests
+                      }}</span>
+                    </v-col>
                   </v-row>
                 </v-col>
                 <v-col
@@ -160,11 +249,14 @@
               </v-row>
             </v-col>
           </template>
-          <AddGuestsSection />
+          <AddGuestsSection
+            :makeGuestReq="makeGuestReq"
+            @add-guests="onAddGuests"
+          />
         </v-menu>
       </v-row>
     </v-col>
-    <v-btn @click="getCountry">get</v-btn>
+    <!-- <v-btn @click="getCountry">get</v-btn> -->
   </v-row>
 </template>
 
@@ -184,9 +276,30 @@ const props = defineProps(["selectedNavTabs"]);
 const selectedNavTabs = ref();
 const dateModel = ref();
 const currentDestination = ref();
-const allCountries = ref([])
-const allStates = ref([])
-
+const allCountries = ref([]);
+const allStates = ref([]);
+const showAddedGuests = ref("");
+const makeGuestReq = ref(false);
+const currentMonthSelected = ref("Dates");
+const currentDaySelected = ref("Weekend");
+const selectedSlideMonth = ref([]);
+const slideMonthList = ref([]);
+const startMonthDateValue = ref([new Date().getDate(), new Date().getMonth()+1, new Date().getFullYear()].join('/'))
+const currentStartingMonthDate = ref()
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 const onDestinationSelection = ({ destiny }) => {
   console.log(destiny);
   switch (destiny.value) {
@@ -211,8 +324,8 @@ const onDestinationSelection = ({ destiny }) => {
 };
 
 const getCountry = async () => {
- console.log("get county")
- const api_key = "S2w4TnY1MTdqNDA1M1J5VGhCSnRxTm5QbGVkcTBlMk1NY3ZoV1Z0OA=="
+  console.log("get county");
+  const api_key = "S2w4TnY1MTdqNDA1M1J5VGhCSnRxTm5QbGVkcTBlMk1NY3ZoV1Z0OA==";
   var config = {
     method: "get",
     url: "https://api.countrystatecity.in/v1/countries",
@@ -220,11 +333,11 @@ const getCountry = async () => {
       "X-CSCAPI-KEY": api_key,
     },
   };
- 
- await axios(config)
+
+  await axios(config)
     .then(function (response) {
       console.log(JSON.stringify(response.data));
-      store.state.allCountries = JSON.stringify(response.data)
+      store.state.allCountries = JSON.stringify(response.data);
       allCountries.value = JSON.parse(JSON.stringify(response.data));
     })
     .catch(function (error) {
@@ -233,8 +346,8 @@ const getCountry = async () => {
 };
 
 const getStates = async () => {
- console.log("get states")
- const api_key = "S2w4TnY1MTdqNDA1M1J5VGhCSnRxTm5QbGVkcTBlMk1NY3ZoV1Z0OA=="
+  console.log("get states");
+  const api_key = "S2w4TnY1MTdqNDA1M1J5VGhCSnRxTm5QbGVkcTBlMk1NY3ZoV1Z0OA==";
   var config = {
     method: "get",
     url: "https://api.countrystatecity.in/v1/states",
@@ -242,11 +355,11 @@ const getStates = async () => {
       "X-CSCAPI-KEY": api_key,
     },
   };
- 
+
   await axios(config)
     .then(function (response) {
       console.log(JSON.stringify(response.data));
-      store.state.allStates = JSON.stringify(response.data)
+      store.state.allStates = JSON.stringify(response.data);
       allStates.value = JSON.parse(JSON.stringify(response.data));
     })
     .catch(function (error) {
@@ -254,6 +367,99 @@ const getStates = async () => {
     });
 };
 
+const onAddGuests = (val) => {
+  // switch(val.guests.name){
+  //   case 'Adults' || 'Children': {
+  //     if(val.guests.value !== 0){
+  //       showAddedGuests.value = (`Guests ${val.guests.value}` + showAddedGuests.value)
+  //     }
+  //   }
+  //   break;
+  //   case 'Infants': {
+  //     if(val.guests.value !== 0){
+  //       showAddedGuests.value = `Infants ${val.guests.value}`
+  //     }
+  //   }
+  // }
+  showAddedGuests.value = "";
+  var a = 0;
+  var flag = true;
+
+  val.guests.forEach((e) => {
+    if (e.value !== 0) {
+      if (e.name === "Adults" || e.name === "Children") {
+        // if (e.name === "Children") {
+        //   if (val.guests.at(0).value === 0) {
+        //     a+=1
+        //     makeGuestReq.value = true;
+        //     flag = true
+        //   }
+        // }
+        a += e.value;
+        console.log("name", e, a);
+        showAddedGuests.value = a === 1 ? `Guest ${a}` : `Guests ${a}`;
+        if (makeGuestReq.value) {
+          makeGuestReq.value = false;
+        }
+      } else if (e.name === "Infants") {
+        if (val.guests.at(0).value === 0) {
+          showAddedGuests.value = `Guest 1`;
+          makeGuestReq.value = true;
+        }
+        showAddedGuests.value +=
+          e.value === 1 ? `, Infant ${e.value}` : `, Infants ${e.value}`;
+      } else {
+        if (val.guests.at(0).value === 0) {
+          showAddedGuests.value = `Guest 1`;
+          makeGuestReq.value = true;
+        }
+        showAddedGuests.value +=
+          e.value === 1 ? `, Pet ${e.value}` : `, Pets ${e.value}`;
+      }
+    }
+  });
+  console.log("add guest", val);
+};
+
+const onDaySelection = ({ day }) => {
+  console.log("selected day", day);
+  currentDaySelected.value = day;
+};
+
+const onMonthSelection = ({ month }) => {
+  console.log("selected month", month);
+  currentMonthSelected.value = month;
+};
+
+const onSelectedSlideMonths = (val) => {
+  selectedSlideMonth.value = val.selectedSlideMonths;
+  slideMonthList.value = val.slideMonthList;
+
+  selectedSlideMonth.value.sort(function (a, b) {
+    return a - b;
+  });
+  console.log("slideMonthList", val, selectedSlideMonth);
+};
+
+const onSelectedMonthSliderValue = ({ val }) => {
+  
+  currentStartingMonthDate.value = new Date(val.startMonthDateValue)
+  let [d,f,g] = val.startMonthDateValue.split('/')
+  let a = parseInt(d)
+  let b = parseInt(f)
+  let c = parseInt(g)
+
+  b = (b) + (val.sliderValue)
+  if(b > 12){
+    b = (b-12)
+    c += 1
+  }
+ console.log("in", a, b, c)
+  currentStartingMonthDate.value = (months.at(b-1)+ " " + a+', '+ c)
+  startMonthDateValue.value = (months.at(f-1)+ " " + d+', '+ g)
+  // console.log("in extended section", val, val.startMonthDateValue, currentStartingMonthDate);
+  // currentStartingMonthDate.value.setMonth(currentStartingMonthDate + val.sliderValue)
+};
 watch(
   () => props.selectedNavTabs,
   () => {
@@ -263,23 +469,23 @@ watch(
   { deep: true }
 );
 
-onMounted(()=> {
-  if(!store.state.allCountries){
-    store.state.allCountries = []
-   // getCountry()
-  }else{
+onMounted(() => {
+  if (!store.state.allCountries) {
+    store.state.allCountries = [];
+    // getCountry()
+  } else {
     allCountries.value = JSON.parse(JSON.stringify(store.state.allCountries));
-    console.log("all countries", allCountries.value, store.state.allCountries)
+    console.log("all countries", allCountries.value, store.state.allCountries);
   }
-  if(!store.state.allStates){
-    store.state.allStates = []
-   // getStates()
-    store.state.allStates =  allStates.value
-  }else{
+  if (!store.state.allStates) {
+    store.state.allStates = [];
+    // getStates()
+    store.state.allStates = allStates.value;
+  } else {
     allStates.value = store.state.allStates;
-    console.log("all states", allStates.value, store.state.allStates)
+    console.log("all states", allStates.value, store.state.allStates);
   }
-})
+});
 </script>
 
 <style scoped>

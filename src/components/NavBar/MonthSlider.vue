@@ -90,11 +90,7 @@
                     color="black"
                     class="white--text mr-3 mb-2 rounded-lg text-capitalize"
                     large
-                    @click="
-                      () => {
-                        setStartMonthDateDialog = false;
-                        startingMonthDate = currentStartingMonthDate;
-                      }"
+                    @click="onApplyStartingMonth"
                   >
                     Apply
                   </v-btn>
@@ -109,13 +105,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineEmits, watch,onMounted } from "vue";
 import RoundSlider from "vue-round-slider";
 import { FunctionalCalendar } from "vue-functional-calendar";
 
 const sliderValue = ref(1);
-const startingMonthDate = ref("1,October");
-const currentStartingMonthDate = ref("1,October");
+
+const currentStartingMonthDate = ref([new Date().getDate(), new Date().getMonth()+1, new Date().getFullYear()].join('/'));
+
+const startMonthDateValue = ref([new Date().getDate(), new Date().getMonth()+1, new Date().getFullYear()].join('/'))
 const setStartMonthDateDialog = ref(false);
 const monthDateModel = ref();
 const months = [
@@ -132,17 +130,41 @@ const months = [
   "November",
   "December",
 ];
+const startingMonthDate = ref()
+
+const emits = defineEmits(["selected-month-slider-value"])
 
 const tooltipFormatter = (e) => {
   return `<span style ='font-size: 76px !important; font-weight: bold'>${e.value} </span>  <br> <span style ='font-size: 18px; font-weight: 300'> months </span>`;
 };
 
 const changeStartMonthDate = (date) => {
-  const [a, b, c] = String(date.date).split("/");
-  console.log(date, date.date.split("/"), a, b, c);
+  //const [a, b, c] = String(date.date).split("/");
+  console.log(date, date.date.split("/"),  startMonthDateValue.value);
 
-  currentStartingMonthDate.value = Array([a, months.at(b - 1)]).join();
+  currentStartingMonthDate.value = date.date;
+  startMonthDateValue.value = date.date
 };
+
+const onApplyStartingMonth =  () => {
+   setStartMonthDateDialog.value = false;
+   const [a, b, c] = String(currentStartingMonthDate.value).split('/');
+   startingMonthDate.value =  Array([a, months.at(b - 1)]).join();
+ }
+watch([sliderValue, startingMonthDate], ()=> {
+  emits('selected-month-slider-value', {
+    sliderValue: sliderValue.value,
+    startMonthDateValue: currentStartingMonthDate.value
+  })
+})
+
+onMounted(() => {
+  const [a, b, c] = String(currentStartingMonthDate.value).split('/');
+  startingMonthDate.value = ref(Array([a, months.at(b - 1)]).join());
+
+  console.log(currentStartingMonthDate, startingMonthDate, a,b,c)
+})
+
 </script>
 
 <style scoped>
