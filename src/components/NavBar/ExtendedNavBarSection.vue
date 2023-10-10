@@ -80,8 +80,7 @@
           vertical
           class="mt-3 mb-3"
           v-show="
-            props.selectedNavTabs === 0 && currentMonthSelected === 'Dates'
-          "
+            props.selectedNavTabs === 0 && currentMonthSelected === 'Dates'"
         ></v-divider>
 
         <v-menu
@@ -137,8 +136,7 @@
               v-show="
                 props.selectedNavTabs === 0 &&
                 (currentMonthSelected === 'Months' ||
-                  currentMonthSelected === 'Flexible')
-              "
+                  currentMonthSelected === 'Flexible')"
             >
               <v-row class="d-flex flex-column rounded-pill pl-8">
                 <v-col class="pa-0 text-caption font-weight-bold">When</v-col>
@@ -158,7 +156,10 @@
                   </span>
                 </v-col>
                 <v-col class="pa-0 text-subtitle-2" v-else>
-                  <span>{{ startMonthDateValue }} - {{ currentStartingMonthDate }}</span>
+                  <span
+                    >{{ startMonthDateValue }} -
+                    {{ currentStartingMonthDate }}</span
+                  >
                 </v-col>
               </v-row>
             </v-col>
@@ -188,19 +189,25 @@
             >
               <v-row class="d-flex flex-column rounded-pill pl-8">
                 <v-col class="pa-0 text-caption font-weight-bold">Date</v-col>
-                <v-col class="pa-0 text-subtitle-2 font-weight-regular"
-                  >Add dates</v-col
-                >
+                <v-col class="pa-0 text-subtitle-2 font-weight-regular">
+                  <span v-if="!experienceDates?.dateRange?.start"
+                    >Add dates</span
+                  >
+                  <span v-else>
+                    {{ experienceStartDate }} - {{ experienceEndDate }}</span
+                  >
+                </v-col>
               </v-row>
             </v-col>
           </template>
           <functional-calendar
-            v-model="dateModel"
+            v-model="experienceDates"
             :sundayStart="true"
             :is-multiple="true"
             :calendars-count="2"
             :is-date-range="true"
             :isLayoutExpandable="true"
+            @dayClicked="dayClicked"
           >
           </functional-calendar>
         </v-menu>
@@ -284,8 +291,18 @@ const currentMonthSelected = ref("Dates");
 const currentDaySelected = ref("Weekend");
 const selectedSlideMonth = ref([]);
 const slideMonthList = ref([]);
-const startMonthDateValue = ref([new Date().getDate(), new Date().getMonth()+1, new Date().getFullYear()].join('/'))
-const currentStartingMonthDate = ref()
+const startMonthDateValue = ref(
+  [
+    new Date().getDate(),
+    new Date().getMonth() + 1,
+    new Date().getFullYear(),
+  ].join("/")
+);
+const currentStartingMonthDate = ref();
+const experienceDates = ref();
+const experienceStartDate = ref();
+const experienceEndDate = ref();
+
 const months = [
   "Jan",
   "Feb",
@@ -442,24 +459,28 @@ const onSelectedSlideMonths = (val) => {
 };
 
 const onSelectedMonthSliderValue = ({ val }) => {
-  
-  currentStartingMonthDate.value = new Date(val.startMonthDateValue)
-  let [d,f,g] = val.startMonthDateValue.split('/')
-  let a = parseInt(d)
-  let b = parseInt(f)
-  let c = parseInt(g)
+  currentStartingMonthDate.value = new Date(val.startMonthDateValue);
+  let [d, f, g] = val.startMonthDateValue.split("/");
+  let a = parseInt(d);
+  let b = parseInt(f);
+  let c = parseInt(g);
 
-  b = (b) + (val.sliderValue)
-  if(b > 12){
-    b = (b-12)
-    c += 1
+  b = b + val.sliderValue;
+  if (b > 12) {
+    b = b - 12;
+    c += 1;
   }
- console.log("in", a, b, c)
-  currentStartingMonthDate.value = (months.at(b-1)+ " " + a+', '+ c)
-  startMonthDateValue.value = (months.at(f-1)+ " " + d+', '+ g)
+  console.log("in", a, b, c);
+  currentStartingMonthDate.value = months.at(b - 1) + " " + a + ", " + c;
+  startMonthDateValue.value = months.at(f - 1) + " " + d + ", " + g;
   // console.log("in extended section", val, val.startMonthDateValue, currentStartingMonthDate);
   // currentStartingMonthDate.value.setMonth(currentStartingMonthDate + val.sliderValue)
 };
+
+const dayClicked = (val) => {
+  // console.log("day select", val, experienceDates)
+};
+
 watch(
   () => props.selectedNavTabs,
   () => {
@@ -469,6 +490,21 @@ watch(
   { deep: true }
 );
 
+watch(
+  experienceDates,
+  () => {
+    const [d1, m1, y1] = (experienceDates.value?.dateRange?.start).split("/");
+    experienceStartDate.value = d1 + " " + months[parseInt(m1)] + " " + y1;
+
+    if (experienceDates.value?.dateRange?.end) {
+      const [d2, m2, y2] = (experienceDates.value?.dateRange?.end).split("/");
+      experienceEndDate.value = d2 + " " + months[parseInt(m2)] + " " + y2;
+    }
+
+    console.log(experienceEndDate, experienceStartDate, experienceDates);
+  },
+  { deep: true }
+);
 onMounted(() => {
   if (!store.state.allCountries) {
     store.state.allCountries = [];
@@ -513,4 +549,10 @@ onMounted(() => {
 ::v-deep .v-input__slot:hover {
   background-color: inherit !important;
 }
+
+::v-deep .vfc-marked {
+  background-color: black !important;
+}
+
+
 </style>
