@@ -1,4 +1,5 @@
 <template>
+  <!-- v-click-outside = onClickOutSide() -->
   <v-sheet style="position: fixed !important; z-index: 6 !important; width: 100%;">
     <v-app-bar
       :extended="false"

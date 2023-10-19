@@ -2,14 +2,13 @@
   <v-sheet>
     <NewThisWeekSection />
     <ChipFilterSection />
-    <SliderCardComponent />
-
+    <AllSliderSections />
   </v-sheet>
 </template>
 
 <script setup>
 import NewThisWeekSection from "@/components/OnlineExperiences/NewThisWeekSection.vue";
 import ChipFilterSection from "@/components/OnlineExperiences/ChipFilterSection.vue";
-import SliderCardComponent from "@/components/OnlineExperiences/SliderCardComponent.vue";
-
+import SliderCardHome from "@/components/OnlineExperiences/SliderCardHome.vue";
+import AllSliderSections from "@/components/OnlineExperiences/AllSliderSections.vue";
 </script>
