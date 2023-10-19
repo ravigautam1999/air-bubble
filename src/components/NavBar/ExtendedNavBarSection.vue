@@ -10,15 +10,16 @@
           :nudge-bottom="10"
         >
           <template v-slot:activator="{ attrs, on }">
-            <v-col cols="4" class="col-style">
+            <v-col cols="4" @click="toggleNavExtension = 0" :class="toggleNavExtension === 0? 'extended-nav-toggle': 'col-style'">
               <v-row
                 class="d-flex flex-column rounded-pill pl-8"
                 v-bind="attrs"
                 v-on="on"
+                @click="toggleNavExtension = 0"
               >
                 <v-col class="pa-0 text-caption font-weight-bold">Where</v-col>
                 <v-col class="pa-0 text-subtitle-2" cols="10">
-                  <v-form v-if="true">
+                  <v-form v-if="true"  @click="toggleNavExtension = 0">
                     <v-text-field
                       placeholder="Search destinations"
                       :value="currentDestination"
@@ -54,7 +55,8 @@
               v-bind="attrs"
               v-on="on"
               cols="2"
-              class="col-style"
+              @click="toggleNavExtension = 1"
+              :class="toggleNavExtension === 1? 'extended-nav-toggle': 'col-style'"
               v-show="
                 props.selectedNavTabs === 0 && currentMonthSelected === 'Dates'
               "
@@ -95,7 +97,8 @@
               v-bind="attrs"
               v-on="on"
               cols="2"
-              class="col-style"
+              @click="toggleNavExtension = 2"
+              :class="toggleNavExtension === 2? 'extended-nav-toggle': 'col-style'"
               v-show="
                 props.selectedNavTabs === 0 && currentMonthSelected === 'Dates'
               "
@@ -132,7 +135,8 @@
               v-bind="attrs"
               v-on="on"
               cols="4"
-              class="col-style"
+              @click="toggleNavExtension = 1"
+              :class="(toggleNavExtension === 1 || toggleNavExtension === 2)? 'extended-nav-toggle': 'col-style'"
               v-show="
                 props.selectedNavTabs === 0 &&
                 (currentMonthSelected === 'Months' ||
@@ -184,7 +188,8 @@
               v-bind="attrs"
               v-on="on"
               cols="4"
-              class="col-style"
+              @click="toggleNavExtension = 4"
+              :class="toggleNavExtension === 4? 'extended-nav-toggle': 'col-style'"
               v-show="props.selectedNavTabs === 1"
             >
               <v-row class="d-flex flex-column rounded-pill pl-8">
@@ -221,7 +226,7 @@
           :nudge-bottom="10"
         >
           <template v-slot:activator="{ attrs, on }">
-            <v-col v-bind="attrs" v-on="on" cols="4" class="col-style">
+            <v-col v-bind="attrs" v-on="on" cols="4" @click="toggleNavExtension = 5" :class="toggleNavExtension === 5? 'extended-nav-toggle': 'col-style'">
               <v-row
                 class="rounded-pill pl-8 d-flex justify-center align-center"
               >
@@ -277,6 +282,7 @@ import axios from "axios";
 import store from "@/store";
 
 const hideExtendedHight = ref(false);
+const toggleNavExtension = ref(0)
 
 const openSearchDestinationsDialog = ref(false);
 const props = defineProps(["selectedNavTabs"]);
@@ -542,6 +548,14 @@ onMounted(() => {
   background-color: rgb(230, 230, 230) !important;
   cursor: pointer;
 }
+
+.extended-nav-toggle {
+  background-color: red;
+  padding: 24px !important;
+  border-radius: 30px !important;
+  color: white;
+}
+
 .extended-height-row-style {
   box-shadow: 0px 0px 1px black;
 }

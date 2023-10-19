@@ -41,6 +41,13 @@
               >
                 {{ tab }}
               </v-tab>
+              <v-tab
+                class="text-capitalize overflow-auto"
+                :key= "OnlineExperiences"
+                to="/experiences"
+              >
+              Online Experiences
+              </v-tab>
             </v-tabs>
           </div>
         </v-col>
@@ -138,7 +145,7 @@ const openSignDialog = ref(false);
 const hideExtendedHight = ref(false);
 const selectedNavTabs = ref();
 const openSearchDestinationsDialog = ref(false);
-const navTabsItem = ["Stays", "Experiences", "Online Experiences"];
+const navTabsItem = ["Stays", "Experiences"];
 const emits = defineEmits(["on-hide-overlay"])
 const onScroll = () => {
   console.log("scroll");
