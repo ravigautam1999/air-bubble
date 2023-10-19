@@ -27,6 +27,8 @@
                       dense
                       hide-details
                       background-color="inherit"
+                    
+
                     ></v-text-field>
                   </v-form>
                   <span v-else class="text-caption font-weight-medium">{{
@@ -66,7 +68,9 @@
                   >Check in</v-col
                 >
                 <v-col class="pa-0 text-subtitle-2 font-weight-regular"
-                  >Add dates</v-col
+                  ><span v-if="!checkInCheckOuDate?.dateRange?.start">Add dates</span>
+                  <span v-else>{{checkInCheckOuDate?.dateRange?.start}}</span>
+                  </v-col
                 >
               </v-row>
             </v-col>
@@ -76,6 +80,7 @@
             @on-month-selection="onMonthSelection"
             @selected-slide-months="onSelectedSlideMonths"
             @selected-month-slider-value="onSelectedMonthSliderValue"
+            @on-check-in-or-out-date-selection="onCheckInOrOutDateSelection"
           />
         </v-menu>
         <v-divider
@@ -108,7 +113,10 @@
                   >Check out</v-col
                 >
                 <v-col class="pa-0 text-subtitle-2 font-weight-regular"
-                  >Add dates</v-col
+                  >
+                  <span v-if="!checkInCheckOuDate?.dateRange?.end">Add dates</span>
+                  <span v-else>{{checkInCheckOuDate?.dateRange?.end}}</span>
+                  </v-col
                 >
               </v-row>
             </v-col>
@@ -119,6 +127,7 @@
             @on-month-selection="onMonthSelection"
             @selected-slide-months="onSelectedSlideMonths"
             @selected-month-slider-value="onSelectedMonthSliderValue"
+            @on-check-in-or-out-date-selection="onCheckInOrOutDateSelection"
           />
         </v-menu>
 
@@ -297,6 +306,7 @@ const currentMonthSelected = ref("Dates");
 const currentDaySelected = ref("Weekend");
 const selectedSlideMonth = ref([]);
 const slideMonthList = ref([]);
+const checkInCheckOuDate = ref()
 const startMonthDateValue = ref(
   [
     new Date().getDate(),
@@ -487,6 +497,13 @@ const dayClicked = (val) => {
   // console.log("day select", val, experienceDates)
 };
 
+const onCheckInOrOutDateSelection = (val) => {
+    checkInCheckOuDate.value = val.checkInDate.value
+
+    console.log("check in ", checkInCheckOuDate, val)
+
+}
+
 watch(
   () => props.selectedNavTabs,
   () => {
@@ -550,7 +567,7 @@ onMounted(() => {
 }
 
 .extended-nav-toggle {
-  background-color: red;
+  background-color: black;
   padding: 24px !important;
   border-radius: 30px !important;
   color: white;
@@ -566,6 +583,10 @@ onMounted(() => {
 
 ::v-deep .vfc-marked {
   background-color: black !important;
+}
+
+::v-deep #input-700 {
+  color:blue
 }
 
 

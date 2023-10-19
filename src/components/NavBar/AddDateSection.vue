@@ -166,7 +166,7 @@ const dayList = ["Weekend", "Week", "Month"];
 const selectedWeek = ref();
 const selectedSlideMonth = ref();
 const currentDate = new Date();
-const emits = defineEmits(["on-day-selection", "on-month-selection", "selected-slide-months", "selected-month-slider-value"])
+const emits = defineEmits(["on-day-selection", "on-month-selection", "selected-slide-months", "selected-month-slider-value", "on-check-in-or-out-date-selection"])
 const slideMonthList = ref([]);
 const monthSliderValue = ref(1)
 const startingMonthDate = ref()
@@ -231,9 +231,15 @@ watch(selectedSlideMonth, ()=>{
   console.log(selectedSlideMonth.value)
   emits('selected-slide-months', {
     selectedSlideMonths: selectedSlideMonth,
-    slideMonthList: slideMonthList
+    slideMonthList: slideMonthList  
   })
 });
+
+watch(dateModel, ()=> {
+  emits("on-check-in-or-out-date-selection" , {
+    checkInDate: dateModel
+  })
+}, {deep: true})
 
 onMounted(() => {
   getMonthList();
