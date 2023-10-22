@@ -123,7 +123,7 @@
             :show-arrows="false"
           >
             <v-carousel-item v-for="(bedImg, indx) in bedroomsList" :key="indx">
-              <v-row>
+              <v-row class="mouse-over"   @click="openBedroomImgDialog = !(openBedroomImgDialog)">
                 <v-col cols="6"
                   ><div>
                     <v-img
@@ -131,7 +131,7 @@
                       :src="bedImg.img1"
                       width="auto"
                       height="200"
-                      @click="openBedroomImgDialog = !(openBedroomImgDialog)"
+                    
                     ></v-img>
                   </div>
                   <span>
@@ -149,7 +149,7 @@
                     :src="bedImg.img2"
                     width="auto"
                     height="200"
-                    @click="openBedroomImgDialog = !(openBedroomImgDialog)"
+                   
                   ></v-img>
                   <div class="text-body-1 font-weight-medium mt-3 ml-1">
                     Bedrooms {{ bedImg.id + 1 }}
@@ -226,5 +226,9 @@ const updateDates = ({dateModel}) => {
 }
 .carousel-img:hover {
     cursor:hand !important;
+}
+
+.mouse-over:hover{
+  cursor: pointer;
 }
 </style>

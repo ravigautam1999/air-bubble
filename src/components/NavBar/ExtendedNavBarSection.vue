@@ -27,7 +27,7 @@
                       dense
                       hide-details
                       background-color="inherit"
-                    
+                      class="text-green"
 
                     ></v-text-field>
                   </v-form>
